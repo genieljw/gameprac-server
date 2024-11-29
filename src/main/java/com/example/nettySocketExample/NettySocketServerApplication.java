@@ -92,8 +92,9 @@ public class NettySocketServerApplication implements CommandLineRunner {
                 if(hitPlayer != null){
                     int damage = Math.max(data.getDamage(), 0); //음수 데미지 방지
                     hitPlayer.setHp(Math.max(hitPlayer.getHp() - damage, 0));  // hp감소(최소값 보장)
+                    System.out.println("HitPlayer SetUp:" + hitPlayer.getHp());
 
-                    //hp가 0 이하면 제거
+                    //hp가 0이면 제거
                     if(hitPlayer.getHp() == 0){
                         System.out.println("Player" + data.getPlayerId() + "eliminated!!");
                         playerMap.remove(data.getPlayerId());
