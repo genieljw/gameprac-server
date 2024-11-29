@@ -7,6 +7,7 @@ import com.corundumstudio.socketio.listener.DataListener;
 import com.example.nettySocketExample.object.Player;
 import com.example.nettySocketExample.object.PlayerHitData;
 import com.example.nettySocketExample.object.PlayerMovementData;
+import com.example.nettySocketExample.object.ShootBeamData;
 import jakarta.annotation.PreDestroy;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -55,6 +56,19 @@ public class NettySocketServerApplication implements CommandLineRunner {
                 }
             }
         }).start();
+
+        socketIOServer.addEventListener("shootBeam", ShootBeamData.class, new DataListener<ShootBeamData>() {
+            @Override
+            public void onData(SocketIOClient client, ShootBeamData data, AckRequest ackRequest){
+                String playerId = client.getSessionId().toString();
+                System.out.println("playerId = " + playerId);
+
+                ShootBeamData beamData = new ShootBeamData(playerId, data.getX(), data.getY(), data.getTargetX(), data.getTargetY() );
+
+                client.getNamespace().getBroadcastOperations().sendEvent("shootBeam", beamData);
+
+            }
+        });
 
         //+time sync+ client가 server time 요청하는 event listener
         socketIOServer.addEventListener("requestServerTime", Long.class, new DataListener<Long>() {
