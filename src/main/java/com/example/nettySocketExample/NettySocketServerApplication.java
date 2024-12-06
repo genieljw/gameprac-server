@@ -119,9 +119,8 @@ public class NettySocketServerApplication implements CommandLineRunner {
                     }
                 }
 
-
                 // // 피격 정보를 모든 클라이언트에 브로드캐스트
-                // client.getNamespace().getBroadcastOperations().sendEvent("playerHit", data);
+//                 client.getNamespace().getBroadcastOperations().sendEvent("playerHit", data);
             }
         });
 
@@ -129,6 +128,7 @@ public class NettySocketServerApplication implements CommandLineRunner {
                 (client, data, ackSender) -> {
             String playerId = client.getSessionId().toString();
             Player player = playerMap.get(playerId);
+
             if(player != null) {
                 player.setX(data.getX());
                 player.setY(data.getY());
